@@ -198,7 +198,7 @@ if [ $NewImage = true ]; then
     if [ $HasImage = true ]; then
         docker stop jd
         docker rm jd
-        docker rmi $(docker images jd -q)
+        docker rmi $(docker images lantianxiang1/jd_shell -q) -f
         # docker image rm -f $DockerImage
     fi
     if [ $GetImageType = "Local" ]; then
@@ -239,3 +239,4 @@ docker ps
 log "\n安装已经完成。\n请访问 http://<ip>:${PanelPort} 进行配置\n初始用户名：admin，初始密码：adminadmin"
 rm -f $ShellDir/$ShellName
 echo "进入容器命令为########docker exec -it jd /bin/bash"
+# 更新于5/26

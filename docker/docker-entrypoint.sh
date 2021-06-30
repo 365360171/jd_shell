@@ -11,9 +11,6 @@ then
   sed -i "s,MY_PATH,${JD_DIR},g" ${JD_DIR}/config/crontab.list
   sed -i "s,ENV_PATH=,PATH=$PATH,g" ${JD_DIR}/config/crontab.list
 fi
-crond
-crontab ${JD_DIR}/config/crontab.list
-echo -e "成功添加定时任务...\n"
 
 if [ ! -s ${JD_DIR}/config/config.sh ]; then
   echo -e "检测到config配置目录下不存在config.sh，从示例文件复制一份用于初始化...\n"
@@ -47,7 +44,7 @@ fi
 
 echo -e "========================4. 启动控制面板========================\n"
 if [[ ${ENABLE_WEB_PANEL} == true ]]; then
-  pm2 start ${JD_DIR}/panel/server.js
+  bash ${JD_DIR}/jd.sh panelon
   echo -e "控制面板启动成功...\n"
   echo -e "如未修改用户名密码，则初始用户名为：admin，初始密码为：adminadmin\n"
   echo -e "请访问 http://<ip>:5678 登陆并修改配置...\n"
@@ -56,8 +53,6 @@ elif [[ ${ENABLE_WEB_PANEL} == false ]]; then
 fi
 echo -e "容器启动成功...\n"
 
-if [ "${1#-}" != "${1}" ] || [ -z "$(command -v "${1}")" ]; then
-  set -- node "$@"
-fi
+crond -f
 
 exec "$@"
